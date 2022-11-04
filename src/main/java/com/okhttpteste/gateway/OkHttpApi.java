@@ -1,7 +1,6 @@
 package com.okhttpteste.gateway;
 
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import java.io.IOException;

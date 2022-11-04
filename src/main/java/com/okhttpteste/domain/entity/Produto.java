@@ -1,25 +1,13 @@
 package com.okhttpteste.domain.entity;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okio.BufferedSink;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
-
 public class Produto {
-
 
 	private Integer id;
 	
-
 	private String name;
 	
-
 	private long ibu;
 	
-
 	private double preco;
 
 	public Integer getId() {
@@ -54,8 +42,8 @@ public class Produto {
 		this.preco = preco;
 	}
 
-	public Produto(Integer id, String name, long ibu, double preco) {
-		this.id = id;
+	public Produto(String name, long ibu, double preco) {
+
 		this.name = name;
 		this.ibu = ibu;
 		this.preco = preco;
