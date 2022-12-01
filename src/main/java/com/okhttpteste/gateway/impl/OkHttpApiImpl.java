@@ -1,61 +1,61 @@
 package com.okhttpteste.gateway.impl;
 
+import com.okhttpteste.exceptionhandler.ConnectRefusedException;
+import com.okhttpteste.exceptionhandler.ProductNotFoundException;
 import com.okhttpteste.gateway.OkHttpApi;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
+import java.net.BindException;
+import java.net.ConnectException;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class OkHttpApiImpl implements OkHttpApi {
     @Override
-    public Response getApi(Request req) throws IOException {
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .addInterceptor(logging)
+    public Object putApi(Request req) throws Exception {
+        final OkHttpClient client = new OkHttpClient().newBuilder()
+                    .connectTimeout(5, TimeUnit.SECONDS)
+                    .writeTimeout(5, TimeUnit.SECONDS)
+                    .readTimeout(5, TimeUnit.SECONDS)
                 .build();
-
-        Request request = new Request.Builder()
-                .url(req.url())
-                .method(req.method(), null)
-                .build();
-
-        return client.newCall(request).execute();
-
-    }
-
-    @Override
-    public Response putApi(Request req) throws IOException {
-
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
 
         assert req.body() != null;
         Request request = new Request.Builder()
-                .url(req.url())
-                .put(req.body())
+                    .url(req.url())
+                    .put(req.body())
                 .build();
 
-        return client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful())throw new ProductNotFoundException();
+
+            return response.body();
+
+        }catch (ConnectException e){
+            throw new ConnectRefusedException();
+        }
     }
 
     @Override
-    public Response postApi(Request req) throws IOException {
-
+    public Object postApi(Request req) throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
         assert req.body() != null;
+
         Request request = new Request.Builder()
                 .url(req.url())
                 .post(req.body())
                 .build();
 
-        return client.newCall(request).execute();
-
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Código inexperado...: " + "response");
+            return response.body();
+        }catch (ConnectException e){
+            throw new ConnectRefusedException();
+        }
     }
 }

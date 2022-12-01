@@ -1,13 +1,14 @@
 package com.okhttpteste.domain.entity;
 
+import org.springframework.lang.NonNull;
+
+import javax.validation.constraints.NotNull;
+
 public class Produto {
 
 	private Integer id;
-	
 	private String name;
-	
 	private long ibu;
-	
 	private double preco;
 
 	public Integer getId() {

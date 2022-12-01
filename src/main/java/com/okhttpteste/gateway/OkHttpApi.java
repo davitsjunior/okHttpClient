@@ -7,9 +7,7 @@ import java.io.IOException;
 
 public interface OkHttpApi {
 
-    public Response getApi(Request request) throws IOException;
+    public Object putApi(Request request) throws Exception;
 
-    public Response putApi(Request request) throws IOException;
-
-    public Response postApi(Request request) throws IOException;
+    public Object postApi(Request request) throws IOException;
 }
