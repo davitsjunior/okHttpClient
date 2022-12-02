@@ -1,7 +1,6 @@
 package com.okhttpteste.domain.entity;
 
-import org.springframework.lang.NonNull;
-
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class Produto {

@@ -4,6 +4,7 @@ import com.okhttpteste.service.OkHttpApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
@@ -19,7 +20,7 @@ public class OkHttpClientApiController {
     }
 
     @PostMapping("/api")
-    public Object postApiController(@RequestBody String produto) throws IOException{
+    public Object postApiController(@RequestBody @Valid String produto) throws IOException{
 
         return okHttpApiService.postApi(produto);
     }
